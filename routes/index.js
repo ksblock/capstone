@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const passport = require('passport');
-const conn = require('../config/db_config');
 const LocalStrategy = require('passport-local').Strategy;
+const conn = require('../config/db_config');
 
 const router = express.Router();
 
