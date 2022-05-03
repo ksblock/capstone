@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     conn.query(sql, [], (err, result) => {
         console.log("success");
         console.log(result);
-        res.sendFile(path.join(__dirname, "../public", "board.html"), {result: result});
+        res.sendFile(path.join(__dirname, "../public/board", "board.html"), {result: result});
     })
 })
 

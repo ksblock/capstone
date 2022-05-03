@@ -6,6 +6,7 @@ const conn = require('../config/db_config');
 
 const router = express.Router();
 
+//passport 정의
 passport.serializeUser(function(user, done) {
   console.log("serializeUser ", user)
   done(null, user.id);
@@ -56,7 +57,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public", "signup.html"));
+  res.sendFile(path.join(__dirname, "../public/user", "signup.html"));
 });
 
 router.post('/signup', function (req, res, next) {
@@ -76,7 +77,7 @@ router.post('/signup', function (req, res, next) {
 })
 
 router.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname, "../public", "login.html"));
+  res.sendFile(path.join(__dirname, "../public/user", "login.html"));
 });
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/',

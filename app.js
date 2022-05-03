@@ -14,6 +14,7 @@ dotenv.config();
 const indexRouter = require('./routes');
 const userRouter = require('./routes/user');
 const boardRouter = require('./routes/board');
+const gymRouter = require('./routes/gym');
 
 const app = express();
 app.set('port', process.env.PORT || 3000);
@@ -37,6 +38,7 @@ app.use(session({
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/board', boardRouter);
+app.use('/gym', gymRouter);
 
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
