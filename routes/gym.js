@@ -3,6 +3,7 @@ const path = require('path');
 const conn = require('../config/db_config');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const axios = require('axios');
 
 const router = express.Router();
 
@@ -59,6 +60,36 @@ router.get('/', function (req, res) {
         console.log("test");
     res.send('Hello, Express');
     //res.sendFile(path.join(__dirname, "../public", "gym.html"));
+})
+
+router.post('/checkDuplicate', function (req, res) {
+  const param = req.body.id;
+
+  var sql = 'SELECT count(*) FROM gym WHERE gym.id = ?';
+  conn.query(sql, param, function(err, result) {
+    if(err)
+    {
+      console.log(err);
+      res.redirect('/gym/signup');
+    }
+
+    if(result.length === 0)
+      res.send({status:200, result:0});
+    else
+      res.send({status:200, result:1});
+  })
+})
+
+router.post('/checkCompany', async (req, res) => {
+  const url = 'http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=' + process.env.serviceKey + '&returnType=JSON';
+  console.log(url);
+
+
+  try{
+    const result = await axios.post()
+  }catch{
+
+  }
 })
 
 router.get('/signup', function (req, res) {

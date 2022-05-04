@@ -6,7 +6,21 @@
     <title>게시글 목록 구현 필요</title>
 </head>
 <body>
-    <h1>{{result.board_id}}</h1>
-    <h1>{{result.title}}</h1>
+    <div>
+        <h1>{{result}}</h1>
+        <script>var name = "<%= result %>";</script>
+        console.log(name);
+    </div>
+    <% for (var i = 0; i < People.length; i++) { %>
+        <p>Welcome to <%- People[i].name %></p>
+        <% } %>
+    <script>
+        document.write("<div>");
+        for(var i = 0;i<result.length;i++){
+            document.write(`${result[i].board_id}`);
+            document.write(`${result[i].title}`);
+        }
+        document.write("</div>");
+    </script>
 </body>
 </html>
