@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
         console.log(typeof(json));
         
         res.send(json);
-        //res.sendFile(path.join(__dirname, "../public/board", "board.html"), {"result": json});
+        //res.send(path.join(__dirname, "../public/board", "board.html"), {"result": json});
     })
 })
 

@@ -57,7 +57,7 @@ passport.use(new LocalStrategy({
 router.get('/', function (req, res) {
     console.log(req.user);
     if(req.user)
-        console.log("test");
+        console.log("test"); 
     res.send('Hello, Express');
     //res.sendFile(path.join(__dirname, "../public", "gym.html"));
 })
