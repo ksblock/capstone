@@ -41,6 +41,7 @@ router.get('/signup', function (req, res) {
 })
 
 router.post('/signup', function (req, res) {
+    console.log(req.body);
     const param = [req.body.name, req.body.nickname, req.body.id, req.body.pw, req.body.large,
     req.body.small, req.body.event];
   
