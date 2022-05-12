@@ -87,6 +87,45 @@ router.post("/detail/:id/writeReply", (req, res) => {
   });
 });
 
+// 게시글 수정
+router.put("/detail/:id", function (req, res) {
+  const param = [
+    req.body.title,
+    req.body.content,
+    req.body.large,
+    req.body.small,
+    req.body.event,
+    req.params.id,
+  ];
+
+  var sql =
+    "UPDATE board SET board.date = now(), board.title = ?, board.content = ?, board.large = ?, board.small = ?, board.event = ? WHERE board.board_id=?;";
+
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result);
+
+    res.send({ success: true, result: result });
+  });
+});
+
+// 댓글 수정
+router.put("/detail/:id/:reply_id", (req, res) => {
+  const param = [req.body.content, req.params.reply_id];
+
+  var sql =
+    "UPDATE reply SET reply.content = ?, reply.date = now() WHERE reply.reply_id = ?;";
+
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send({ success: true, result: result });
+  });
+});
+
 // 게시글 삭제
 router.delete("/detail/:id", (req, res) => {
   const param = [req.params.id];
