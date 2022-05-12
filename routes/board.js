@@ -89,10 +89,25 @@ router.post("/detail/:id/writeReply", (req, res) => {
 
 // 게시글 삭제
 router.delete("/detail/:id", (req, res) => {
-  const param = [req.params.id, req.body.user_id];
+  const param = [req.params.id];
   // 게시글 삭제 요청을 보낸 user_id와 게시글을 작성한 user_id가 같을 경우 삭제
   // 프론트에서 처리 어떻게?
-  var sql = "DELETE FROM board WHERE board.board_id = ? and board.user_id = ?;";
+  // 게시글 삭제시 게시글에 있는 댓글도 같이 삭제해야함
+  var sql = "DELETE FROM board WHERE board.board_id = ?;";
+
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send({ success: true, result: result });
+  });
+});
+
+// 댓글 삭제
+router.delete("/detail/:id/:reply_id", (req, res) => {
+  const param = [req.params.reply_id];
+
+  var sql = "DELETE FROM reply WHERE reply_id = ?;";
 
   conn.query(sql, param, (err, result) => {
     if (err) {
