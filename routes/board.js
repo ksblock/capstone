@@ -8,14 +8,47 @@ const router = express.Router();
 
 // 게시글 목록
 router.get("/list", function (req, res) {
-  console.log("test");
   var sql =
     "select board.board_id, board.title, users.nickname, board.date from users, board where board.user_id = users.user_id;";
   conn.query(sql, [], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
     console.log("success");
 
     res.send(result);
-    //res.send(path.join(__dirname, "../public/board", "board.html"), {"result": json});
+  });
+});
+
+// 게시글 종목별 목록 조회
+router.get("/list/sport/:event", function (req, res) {
+  const param = [req.params.event];
+
+  var sql =
+    "select board.board_id, board.title, users.nickname, board.date from users, board WHERE board.event = ? and board.user_id =users.user_id;";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
+
+// 게시글 지역별(small) 목록 조회
+router.get("/list/region/:small", function (req, res) {
+  const param = [req.params.small];
+
+  var sql =
+    "select board.board_id, board.title, users.nickname, board.date from users, board WHERE board.small = ? and board.user_id =users.user_id;";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
   });
 });
 
