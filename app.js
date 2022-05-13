@@ -7,6 +7,7 @@ const path = require('path');
 const mysql = require('mysql2');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const passportConfig = require('./passport');
 const conn = require('./config/db_config');
 
 dotenv.config();
@@ -14,7 +15,7 @@ dotenv.config();
 const indexRouter = require('./routes');
 const userRouter = require('./routes/user');
 const boardRouter = require('./routes/board');
-const gymRouter = require('./routes/gym');
+const accountRouter = require('./routes/account');
 
 const app = express();
 app.set('port', process.env.PORT || 3000);
@@ -31,14 +32,16 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false,
-  },
-  name: 'session-cookie',
+  }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+passportConfig();
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/board', boardRouter);
-app.use('/gym', gymRouter);
+app.use('/account', accountRouter);
 
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
