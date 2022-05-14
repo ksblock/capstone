@@ -1,7 +1,5 @@
 const express = require("express");
 const res = require("express/lib/response");
-const { redirect } = require("express/lib/response");
-const { appendFile } = require("fs");
 const path = require("path");
 const conn = require("../config/db_config");
 
