@@ -38,6 +38,19 @@ router.get("/posting/:user_id", function (req, res) {
 
 // ----------------추후 추가 예정------------------
 // 예약 이력 조회
+// issue - 조회시 reservation_date 9시간 차이남
+router.get("/reservation/:user_id", function (req, res) {
+  const param = [req.params.user_id];
+  var sql =
+    "SELECT reservation_id, user_id, gym_id, reservation_date, start_time, end_time, price, description, status FROM reservation WHERE user_id = ?";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
 
 // 매칭 이력 조회
 

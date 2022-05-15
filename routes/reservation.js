@@ -6,6 +6,7 @@ const conn = require("../config/db_config");
 
 const router = express.Router();
 
+// 예약 생성
 router.post("/", function (req, res) {
   const param = [
     req.body.user_id,
@@ -18,6 +19,21 @@ router.post("/", function (req, res) {
     req.body.status,
   ];
   var sql = "INSERT INTO reservation VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
+
+// 예약 취소 요청
+router.put("/cancel/:reservation_id", function (req, res) {
+  const param = [req.params.reservation_id];
+  var sql =
+    'UPDATE reservation SET status = "예약취소" WHERE reservation_id = ?';
   conn.query(sql, param, (err, result) => {
     if (err) {
       console.log(err);
