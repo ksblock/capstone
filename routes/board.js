@@ -25,7 +25,6 @@ router.get("/list/sports/:sports", function (req, res) {
   const param = [req.params.sports];
 
   var sql =
-    //"select board.board_id, board.title, users.nickname, board.date from users, board WHERE board.event = ? and board.user_id =users.user_id;";
     "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.sports = ? AND board_post.user_id = user_info.user_id;";
   conn.query(sql, param, (err, result) => {
     if (err) {
@@ -75,15 +74,14 @@ router.get("/list/region/:state/:city", function (req, res) {
 // 개별 게시글 조회
 router.get("/detail/:post_id", function (req, res) {
   const param = [req.params.post_id];
-
+  // user_id 정보 추가
   var sql =
-    "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.post_id = ? AND board_post.user_id = user_info.user_id;";
+    "SELECT board_post.post_id, board_post.date, user_info.user_id, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.post_id = ? AND board_post.user_id = user_info.user_id;";
 
   conn.query(sql, param, (err, result) => {
     console.log(result);
 
     res.send(result);
-    //res.send(path.join(__dirname, "../public/board", "board.html"), {"result": json});
   });
 });
 
@@ -98,7 +96,6 @@ router.get("/detail/:post_id/comment", (req, res) => {
     console.log(result);
 
     res.send(result);
-    //res.send(path.join(__dirname, "../public/board", "board.html"), {"result": json});
   });
 });
 
