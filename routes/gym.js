@@ -24,7 +24,7 @@ router.get("/list/:sports", function (req, res) {
   const param = [req.params.sports];
 
   var sql =
-    "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE sports = ?";
+    "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE sports = ? AND gym_info.gym_id = gym_operation.gym_id";
   conn.query(sql, param, (err, result) => {
     if (err) {
       console.log(err);
