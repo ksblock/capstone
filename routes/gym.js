@@ -19,6 +19,22 @@ router.get("/list", function (req, res) {
   });
 });
 
+// 체육관 목록 종목별로 조회
+router.get("/list/:sports", function (req, res) {
+  const param = [req.params.sports];
+
+  var sql =
+    "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE sports = ?";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
+
 // 체육관 목록 지역별(state)로 조회
 router.get("/list/:state", function (req, res) {
   const param = [req.params.state];
