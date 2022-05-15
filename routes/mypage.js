@@ -7,10 +7,11 @@ const conn = require("../config/db_config");
 const router = express.Router();
 
 // 유저 정보 조회
-router.get("/info", function (req, res) {
+router.get("/info/:user_id", function (req, res) {
+  const param = [req.params.user_id];
   var sql =
-    "SELECT user_id, user_name, nickname, id, pw, phone, email, state, city FROM user_info";
-  conn.query(sql, [], (err, result) => {
+    "SELECT user_name, nickname, id, pw, phone, email, state, city FROM user_info WHERE user_id = ?";
+  conn.query(sql, param, (err, result) => {
     if (err) {
       console.loog(err);
     }
@@ -24,15 +25,20 @@ router.get("/info", function (req, res) {
 router.get("/posting/:user_id", function (req, res) {
   const param = [req.params.user_id];
   var sql =
-    "SELECT date, user_id, title, content, type, sports,  FROM board_post WHERE user_id = ?";
+    "SELECT date, user_id, title, content, type, sports, state, city FROM board_post WHERE user_id = ?";
   conn.query(sql, param, (err, result) => {
     if (err) {
-      console.loog(err);
+      console.log(err);
     }
     console.log("success");
 
     res.send(result);
   });
 });
+
+// ----------------추후 추가 예정------------------
+// 예약 이력 조회
+
+// 매칭 이력 조회
 
 module.exports = router;
