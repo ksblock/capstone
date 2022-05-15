@@ -83,6 +83,21 @@ router.get("/operation/:gym_id", function (req, res) {
   });
 });
 
+// 체육관 전체 가격 조회
+router.get("/operation", function (req, res) {
+  //const param = [req.params.gym_id];
+
+  var sql = "SELECT gym_id, price FROM gym_operation";
+  conn.query(sql, [], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
+
 // 체육관 주소 or 좌표?
 
 module.exports = router;

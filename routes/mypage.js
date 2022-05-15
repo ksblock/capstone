@@ -36,7 +36,6 @@ router.get("/posting/:user_id", function (req, res) {
   });
 });
 
-// ----------------추후 추가 예정------------------
 // 예약 이력 조회
 // issue - 조회시 reservation_date 9시간 차이남
 router.get("/reservation/:user_id", function (req, res) {
@@ -52,6 +51,7 @@ router.get("/reservation/:user_id", function (req, res) {
   });
 });
 
+// ----------------추후 추가 예정------------------
 // 매칭 이력 조회
 
 module.exports = router;
