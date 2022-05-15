@@ -39,6 +39,9 @@ router.get("/list/sports/:sports", function (req, res) {
 
 // 게시글 지역별(state) 목록 조회
 router.get("/list/region/:state", function (req, res) {
+  // var querydata = url.parse(req.url, true).query;
+  // const param = [querydata.state, querydata.city, querydata.sports];
+
   const param = [req.params.state];
 
   var sql =

@@ -83,4 +83,6 @@ router.get("/operation/:gym_id", function (req, res) {
   });
 });
 
+// 체육관 주소 or 좌표?
+
 module.exports = router;

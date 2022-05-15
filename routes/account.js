@@ -16,15 +16,15 @@ router.get("/", function (req, res) {
   //res.sendFile(path.join(__dirname, "../public", "gym.html"));
 });
 
+// 회원가입시 id 중복 체크
 router.post("/idCheck", function (req, res) {
   const param = [req.body.id];
   console.log(req.body.id);
 
-  var sql = "SELECT count(*) FROM users WHERE users.id = ?";
+  var sql = "SELECT count(*) FROM user_info WHERE user_info.id = ?";
   conn.query(sql, param, function (err, result) {
     if (err) {
       console.log(err);
-      res.redirect("/account/signup");
     }
     console.log(result[0]["count(*)"]);
     if (result[0]["count(*)"] === 0)
@@ -39,27 +39,41 @@ router.get("/signup", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/account", "signup.html"));
 });
 
+// 회원가입 정보 입력
 router.post("/signup", function (req, res) {
   console.log(req.body);
   const param = [
-    req.body.name,
+    req.body.user_name,
     req.body.nickname,
     req.body.id,
     req.body.pw,
-    req.body.large,
-    req.body.small,
-    req.body.event,
+    req.body.phone,
+    req.body.email,
+    req.body.state,
+    req.body.city,
   ];
 
-  var sql = "INSERT INTO users VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)";
+  var sql = "INSERT INTO user_info VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
   conn.query(sql, param, function (err, result) {
     if (err) {
       console.log(err);
-      return res.redirect("/account/signup");
     }
   });
+  res.send({ success: true });
+});
 
-  res.redirect("/account/login");
+// 회원가입시 스포츠 종목 추가
+router.post("/signup/sports/:user_id", function (req, res) {
+  console.log(req.body);
+  const param = [req.params.user_id, req.body.sport];
+
+  var sql = "INSERT INTO user_sports VALUES(?, ?)";
+  conn.query(sql, param, function (err, result) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  res.send({ message: "스포츠 종목 추가완료" });
 });
 
 router.get("/login", function (req, res) {
@@ -76,17 +90,23 @@ router.get("/login", function (req, res) {
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/account/login",
+    successRedirect: "/account/successLogin",
+    failureRedirect: "/account/failureLogin",
     session: true,
-  }),
-  function (req, res) {
-    res.redirect("/" + req.user.user_id);
-  }
+  })
 );
 
 router.get("/logout", function (req, res) {
   req.logout();
-  res.redirect("/account/login");
+  res.send({ message: "로그아웃 성공" });
+});
+
+router.get("/successLogin", function (req, res) {
+  res.send({ user: req.user, message: "로그인 성공" });
+});
+
+router.get("/failureLogin", function (req, res) {
+  res.send({ message: "로그인 실패" });
 });
 
 router.get("/test", function (req, res) {
