@@ -27,9 +27,11 @@ router.post("/idCheck", function (req, res) {
       console.log(err);
     }
     console.log(result[0]["count(*)"]);
-    if (result[0]["count(*)"] === 0)
+    if (result[0]["count(*)"] === 0) {
       //id 사용 가능
+      console.log(result[0]);
       res.send({ status: 200, result: 0 });
+    }
     //id 사용 불가
     else res.send({ status: 200, result: 1 });
   });
@@ -62,18 +64,25 @@ router.post("/signup", function (req, res) {
   res.send({ success: true });
 });
 
-// 회원가입시 스포츠 종목 추가
+// 회원가입시 스포츠 종목 추가(여러 종목 가능)
 router.post("/signup/sports/:user_id", function (req, res) {
-  console.log(req.body);
-  const param = [req.params.user_id, req.body.sport];
+  var id = req.params.user_id;
+  var sports = req.body.sports;
+  const sports_length = Object.keys(sports).length;
 
-  var sql = "INSERT INTO user_sports VALUES(?, ?)";
-  conn.query(sql, param, function (err, result) {
-    if (err) {
-      console.log(err);
-    }
-  });
-  res.send({ message: "스포츠 종목 추가완료" });
+  var sql = "insert into user_sports values(?, ?);";
+
+  for (var cnt = 0; cnt < sports_length; cnt++) {
+    var par = [id, sports[cnt]];
+
+    conn.query(sql, par, (err, result) => {
+      if (err) console.log(err);
+    });
+
+    // params.push(par);
+  }
+
+  res.send({ message: "성공" });
 });
 
 router.get("/login", function (req, res) {
