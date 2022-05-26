@@ -51,6 +51,21 @@ router.get("/list/state/:state", function (req, res) {
   });
 });
 
+// query string 방식
+router.get("/list?state=", function (req, res) {
+  const param = [req.query.state];
+
+  var sql =
+    "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE state = ? AND gym_info.gym_id = gym_operation.gym_id";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
+
 // 체육관 목록 지역별(city)로 조회
 router.get("/list/:state/:city", function (req, res) {
   const param = [req.params.city];
