@@ -36,7 +36,7 @@ router.get("/list/:sports", function (req, res) {
 });
 
 // 체육관 목록 지역별(state)로 조회
-// query string 방식으로 전환 필요..
+// path value 방식
 router.get("/list/state/:state", function (req, res) {
   const param = [req.params.state];
 
@@ -51,20 +51,21 @@ router.get("/list/state/:state", function (req, res) {
   });
 });
 
+// 체육관 목록 지역별(state)로 조회
 // query string 방식
-router.get("/list?state=", function (req, res) {
-  const param = [req.query.state];
+// router.get("/list", function (req, res) {
+//   const param = [req.query.state];
 
-  var sql =
-    "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE state = ? AND gym_info.gym_id = gym_operation.gym_id";
-  conn.query(sql, param, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log("success");
-    res.send(result);
-  });
-});
+//   var sql =
+//     "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE state = ? AND gym_info.gym_id = gym_operation.gym_id";
+//   conn.query(sql, param, (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log("success");
+//     res.send(result);
+//   });
+// });
 
 // 체육관 목록 지역별(city)로 조회
 router.get("/list/:state/:city", function (req, res) {
@@ -81,6 +82,22 @@ router.get("/list/:state/:city", function (req, res) {
     res.send(result);
   });
 });
+
+// 체육관 목록 지역별(city)로 조회
+// query string 방식
+// router.get("/list", function (req, res) {
+//   const param = [req.query.state, req.query.city];
+
+//   var sql =
+//     "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE state = ? AND city = ?";
+//   conn.query(sql, param, (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log("success");
+//     res.send(result);
+//   });
+// });
 
 // 체육관 개별 기본정보 조회
 router.get("/detail/:gym_id", function (req, res) {
