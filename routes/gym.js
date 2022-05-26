@@ -115,5 +115,18 @@ router.get("/operation", function (req, res) {
 });
 
 // 체육관 주소 or 좌표?
+router.get("/address/:gym_id", function (req, res) {
+  const param = [req.params.gym_id];
+
+  var sql = "SELECT state, city, location FROM gym_info WHERE gym_id = ?";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
 
 module.exports = router;
