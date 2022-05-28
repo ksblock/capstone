@@ -85,16 +85,16 @@ router.post("/signup/sports/:user_id", function (req, res) {
   res.send({ message: "성공" });
 });
 
-router.get("/login", function (req, res) {
-  if (req.isAuthenticated()) res.redirect("/" + req.user.user_id);
-  if (req.user) {
-    console.log(req.user);
-    console.log(typeof req.user);
-    console.log(req.user.user_id);
-    //console.log(req.session);
-  }
-  res.sendFile(path.join(__dirname, "../public/account", "login.html"));
-});
+// router.get("/login", function (req, res) {
+//   if (req.isAuthenticated()) res.redirect("/" + req.user.user_id);
+//   if (req.user) {
+//     console.log(req.user);
+//     console.log(typeof req.user);
+//     console.log(req.user.user_id);
+//     //console.log(req.session);
+//   }
+//   res.sendFile(path.join(__dirname, "../public/account", "login.html"));
+// });
 
 router.post(
   "/login",
@@ -111,6 +111,8 @@ router.get("/logout", function (req, res) {
 });
 
 router.get("/successLogin", function (req, res) {
+  console.log(req.headers.cookie);
+  console.log(req.user);
   res.send({ user: req.user, message: "로그인 성공" });
 });
 

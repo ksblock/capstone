@@ -9,7 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const passportConfig = require("./passport");
 const conn = require("./config/db_config");
-var cors = require("cors"); //교차통신 모듈 호출
+const cors = require("./cors"); //교차통신 모듈 호출
 
 dotenv.config();
 
@@ -28,15 +28,18 @@ app.use(morgan("dev"));
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.set("trust proxy", 1);
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: process.env.COOKIE_SECRET,
     cookie: {
       httpOnly: true,
       secure: false,
+      // domain: "192.168.0.102",
+      // sameSite: "none",
     },
   })
 );
@@ -44,7 +47,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig();
 
-app.use(cors()); //교차통신 적용
+//교차통신 적용
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  cors({
+    origins: [
+      "http://192.168.0.102:8080",
+      "http://192.168.35.157:8080",
+      "http://localhost:8080",
+    ],
+  })
+);
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);

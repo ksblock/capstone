@@ -6,22 +6,27 @@ const conn = require("./config/db_config");
 module.exports = () => {
   passport.serializeUser(function (user, done) {
     console.log("serializeUser ", user);
-    done(null, user.user_id);
+    done(null, user);
   });
 
-  passport.deserializeUser(function (id, done) {
-    console.log("deserializeUser id ", id);
-    var userinfo;
-    //console.log(id);
-    var sql = "SELECT * FROM user_info where user_id=?";
-    conn.query(sql, [id], function (err, result) {
-      if (err) console.log(err);
-      //console.log("deserializeUser mysql result : ", result);
-      var json = JSON.stringify(result[0]);
-      userinfo = JSON.parse(json);
-      done(null, userinfo);
-    });
+  passport.deserializeUser(function (user, done) {
+    console.log("이건가", user);
+    done(null, user);
   });
+
+  // passport.deserializeUser(function (id, done) {
+  //   console.log("deserializeUser id ", id);
+  //   var userinfo;
+  //   //console.log(id);
+  //   var sql = "SELECT * FROM user_info where user_id=?";
+  //   conn.query(sql, [id], function (err, result) {
+  //     if (err) console.log(err);
+  //     //console.log("deserializeUser mysql result : ", result);
+  //     var json = JSON.stringify(result[0]);
+  //     userinfo = JSON.parse(json);
+  //     done(null, userinfo);
+  //   });
+  // });
 
   passport.use(
     new LocalStrategy(
