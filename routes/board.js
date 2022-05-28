@@ -38,9 +38,6 @@ router.get("/list/sports/:sports", function (req, res) {
 
 // 게시글 지역별(state) 목록 조회
 router.get("/list/region/:state", function (req, res) {
-  // var querydata = url.parse(req.url, true).query;
-  // const param = [querydata.state, querydata.city, querydata.sports];
-
   const param = [req.params.state];
 
   var sql =
@@ -71,6 +68,62 @@ router.get("/list/region/:state/:city", function (req, res) {
   });
 });
 
+// 게시글 필터링 query string
+router.get("/list/filter", function (req, res) {
+  let param;
+  if (req.query.state) {
+    if (req.query.city) {
+      if (req.query.sports) {
+        //state city sports
+        param = [req.query.state, req.query.city, req.query.sports];
+        var sql =
+          "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.state = ? AND board_post.city = ? AND board_post.sports = ? AND board_post.user_id = user_info.user_id;";
+      } else {
+        //state city
+        param = [req.query.state, req.query.city];
+        var sql =
+          "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.state = ? AND board_post.city = ? AND board_post.user_id = user_info.user_id;";
+      }
+    } else if (req.query.sports) {
+      //state sports
+      param = [req.query.state, req.query.sports];
+      var sql =
+        "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.state = ? AND board_post.sports = ? AND board_post.user_id = user_info.user_id;";
+    } else {
+      //state
+      param = [req.query.state];
+      var sql =
+        "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.state = ? AND board_post.user_id = user_info.user_id;";
+    }
+  } else if (req.query.sports) {
+    if (req.query.state) {
+      if (req.query.city) {
+        //sports state city
+        param = [req.query.sports, req.query.state, req.query.city];
+        var sql =
+          "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.sports = ? AND board_post.state = ? AND board_post.city = ? AND board_post.user_id = user_info.user_id;";
+      } else {
+        //sports state
+        param = [req.query.sports, req.query.state];
+        var sql =
+          "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.sports = ? AND board_post.state = ? AND board_post.user_id = user_info.user_id;";
+      }
+    } else {
+      //sports
+      param = [req.query.sports];
+      var sql =
+        "SELECT board_post.post_id, board_post.date, user_info.nickname, board_post.title, board_post.content, board_post.type, board_post.sports, board_post.state, board_post.city FROM user_info, board_post WHERE board_post.sports = ? AND board_post.user_id = user_info.user_id;";
+    }
+  }
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
+
 // 개별 게시글 조회
 router.get("/detail/:post_id", function (req, res) {
   const param = [req.params.post_id];
@@ -97,10 +150,6 @@ router.get("/detail/:post_id/comment", (req, res) => {
 
     res.send(result);
   });
-});
-
-router.get("/write", (req, res) => {
-  res.send("write board");
 });
 
 // 게시글 작성

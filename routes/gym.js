@@ -20,36 +20,36 @@ router.get("/list", function (req, res) {
 });
 
 // 체육관 목록 종목별로 조회
-// router.get("/list/:sports", function (req, res) {
-//   const param = [req.params.sports];
+router.get("/list/:sports", function (req, res) {
+  const param = [req.params.sports];
 
-//   var sql =
-//     "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE sports = ? AND gym_info.gym_id = gym_operation.gym_id";
-//   conn.query(sql, param, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log("success");
+  var sql =
+    "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE sports = ? AND gym_info.gym_id = gym_operation.gym_id";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
 
-//     res.send(result);
-//   });
-// });
+    res.send(result);
+  });
+});
 
 // 체육관 목록 지역별(state)로 조회
 // path value 방식
-// router.get("/list/state/:state", function (req, res) {
-//   const param = [req.params.state];
+router.get("/list/state/:state", function (req, res) {
+  const param = [req.params.state];
 
-//   var sql =
-//     "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE state = ? AND gym_info.gym_id = gym_operation.gym_id";
-//   conn.query(sql, param, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log("success");
-//     res.send(result);
-//   });
-// });
+  var sql =
+    "SELECT gym_info.gym_id, gym_info.gym_name, gym_info.host_id, gym_info.email, gym_info.phone, gym_info.location, gym_info.state, gym_info.city, gym_info.sports, gym_operation.price FROM gym_info, gym_operation WHERE state = ? AND gym_info.gym_id = gym_operation.gym_id";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
 
 // 체육관 목록 지역별(state)로 조회
 // query string 방식
@@ -69,20 +69,20 @@ router.get("/list", function (req, res) {
 // });
 
 // 체육관 목록 지역별(city)로 조회
-// router.get("/list/:state/:city", function (req, res) {
-//   const param = [req.params.city];
+router.get("/list/:state/:city", function (req, res) {
+  const param = [req.params.city];
 
-//   var sql =
-//     "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE city = ?";
-//   conn.query(sql, param, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log("success");
+  var sql =
+    "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE city = ?";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
 
-//     res.send(result);
-//   });
-// });
+    res.send(result);
+  });
+});
 
 // 체육관 목록 필터링
 // query string 방식
@@ -91,19 +91,23 @@ router.get("/list/filter", function (req, res) {
   if (req.query.state) {
     if (req.query.city) {
       if (req.query.sports) {
+        //state city sports
         param = [req.query.state, req.query.city, req.query.sports];
         var sql =
           "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE state = ? AND city = ? AND sports = ?";
       } else {
+        //state city
         param = [req.query.state, req.query.city];
         var sql =
           "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE state = ? AND city = ?";
       }
     } else if (req.query.sports) {
+      //state sports
       param = [req.query.state, req.query.sports];
       var sql =
         "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE state = ? AND sports = ?";
     } else {
+      //state
       param = [req.query.state];
       var sql =
         "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE state = ?";
@@ -111,15 +115,18 @@ router.get("/list/filter", function (req, res) {
   } else if (req.query.sports) {
     if (req.query.state) {
       if (req.query.city) {
+        //sports state city
         param = [req.query.sports, req.query.state, req.query.city];
         var sql =
           "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE sports = ? AND state = ? AND city = ?";
       } else {
+        //sports state
         param = [req.query.sports, req.query.state];
         var sql =
           "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE sports = ? AND state = ?";
       }
     } else {
+      //sports
       param = [req.query.sports];
       var sql =
         "SELECT gym_id, gym_name, host_id, email, phone, location, state, city, sports FROM gym_info WHERE sports = ?";
