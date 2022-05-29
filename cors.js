@@ -9,9 +9,9 @@ module.exports = (options) => {
       let origins = options.origins;
 
       //console.log(options);
-      console.log(req.headers.origin);
+      // console.log(req.headers.origin);
       //console.log(req.headers);
-      console.log(origins);
+      // console.log(origins);
 
       for (let i = 0; i < origins.length; i++) {
         if (req.headers.origin === origins[i]) {

@@ -3,6 +3,8 @@ const { redirect } = require("express/lib/response");
 const { appendFile } = require("fs");
 const path = require("path");
 const conn = require("../config/db_config");
+const mysql = require("mysql2");
+const { start } = require("repl");
 
 const router = express.Router();
 
@@ -49,9 +51,42 @@ router.put("/cancel/:reservation_id", function (req, res) {
 });
 
 //예약 가능 시간 조회
-// router.get("/time:gym_id", function (req, res){
-//   const param = [req.params.gym_id];
-//   var
-// })
+router.get("/time/:gym_id", function (req, res) {
+  const gym_id = [req.params.gym_id];
+  var sql1 = "SELECT start_time, end_time FROM reservation WHERE gym_id = ?;";
+  var sql1s = mysql.format(sql1, gym_id);
+
+  var sql2 = "SELECT court FROM gym_operation WHERE gym_id = ?;";
+  var sql2s = mysql.format(sql2, gym_id);
+
+  var sql3 =
+    "SELECT start_time, end_time, court FROM reservation WHERE gym_id = ?;";
+  var sql3s = mysql.format(sql3, gym_id);
+
+  conn.query(sql1s + sql2s + sql3s, [], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    var all_court = result[1][0].court; // court 개수 가져오기
+    console.log(all_court);
+    var time = new Array(24); // 시간당 예약 가능한 court 수가 들어갈 time 배열 생성(0시~23시)
+    time.fill(all_court, 0, 24); // time 배열의 모든 값을 court값으로 초기화
+    console.log(time);
+    console.log(result[2]);
+
+    var reserve_num = result[2].length;
+    console.log(reserve_num);
+
+    for (var i = 0; i < reserve_num; i++) {
+      for (var j = result[2][i].start_time; j < result[2][i].end_time; j++) {
+        time[j] -= result[2][i].court;
+      }
+    }
+    console.log(time);
+    console.log("success");
+
+    res.send(time);
+  });
+});
 
 module.exports = router;
