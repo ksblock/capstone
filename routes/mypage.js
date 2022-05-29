@@ -41,7 +41,7 @@ router.get("/posting/:user_id", function (req, res) {
 router.get("/reservation/:user_id", function (req, res) {
   const param = [req.params.user_id];
   var sql =
-    "SELECT reservation_id, user_id, gym_id, reservation_date, start_time, end_time, price, description, status FROM reservation WHERE user_id = ?";
+    "SELECT reservation_id, user_id, gym_id, date, start_time, end_time, description, status, court, player, merchant_uid, imp_uid, amount FROM reservation WHERE user_id = ?";
   conn.query(sql, param, (err, result) => {
     if (err) {
       console.log(err);
