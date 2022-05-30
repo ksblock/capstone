@@ -20,6 +20,7 @@ const accountRouter = require("./routes/account");
 const gymRouter = require("./routes/gym");
 const mypageRouter = require("./routes/mypage");
 const reservationRouter = require("./routes/reservation");
+const matchingRouter = require("./routes/matching");
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -68,6 +69,7 @@ app.use("/account", accountRouter);
 app.use("/gym", gymRouter);
 app.use("/mypage", mypageRouter);
 app.use("/reservation", reservationRouter);
+app.use("/matching", matchingRouter);
 
 app.use((req, res, next) => {
   res.status(404).send("Not Found");
