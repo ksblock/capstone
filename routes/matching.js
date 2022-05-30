@@ -28,7 +28,7 @@ router.post("/", function (req, res) {
   });
 });
 
-// 매칭 포지션 선택
+// 매칭 플레이어 포지션 선택
 router.post("/position/:matching_id", function (req, res) {
   const param = [
     req.params.matching_id,
@@ -40,6 +40,19 @@ router.post("/position/:matching_id", function (req, res) {
   var sql = "INSERT INTO matching_player VALUES(?, ?, ?, ?)";
 
   conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
+
+// 매칭 플레이어 조회
+router.get("/position/:matching_id", function (req, res) {
+  var sql = "SELECT * FROM matching_player";
+
+  conn.query(sql, [], (err, result) => {
     if (err) {
       console.log(err);
     }
