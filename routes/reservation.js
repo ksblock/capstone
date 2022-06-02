@@ -50,6 +50,7 @@ router.put("/cancel/:reservation_id", function (req, res) {
   });
 });
 
+//reservation/time/:gym_id?date=2022-05-03
 //예약 가능 시간 조회
 router.get("/time/:gym_id", function (req, res) {
   const gym_id = [req.params.gym_id, req.query.date];

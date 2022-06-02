@@ -84,6 +84,7 @@ router.get("/list/:state/:city", function (req, res) {
   });
 });
 
+// gym/list/filter?state=&sports
 // 체육관 목록 필터링
 // query string 방식
 router.get("/list/filter", function (req, res) {
