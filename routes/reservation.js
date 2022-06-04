@@ -24,15 +24,30 @@ router.post("/", function (req, res) {
     req.body.imp_uid,
     req.body.amount,
   ];
-  var sql =
+
+  const reservation_info = [
+    req.body.date,
+    req.body.start_time,
+    req.body.end_time,
+  ];
+
+  var sql1 =
     "INSERT INTO reservation VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-  conn.query(sql, param, (err, result) => {
+
+  var sql1s = mysql.format(sql1, param);
+
+  var sql2 =
+    "SELECT reservation_id FROM reservation WHERE date = ? AND start_time = ? AND end_time = ?;";
+
+  var sql2s = mysql.format(sql2, reservation_info);
+
+  conn.query(sql1s + sql2s, [], (err, result) => {
     if (err) {
       console.log(err);
     }
     console.log("success");
-
-    res.send(result);
+    console.log(result[1]);
+    res.send(result[1]);
   });
 });
 
