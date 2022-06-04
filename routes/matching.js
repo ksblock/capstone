@@ -63,7 +63,21 @@ router.post("/position/:matching_id", function (req, res) {
   });
 });
 
-//
+// 매칭 포지션 취소
+router.put("/position/:matching_id", function (req, res) {
+  const param = [req.params.matching_id, req.body.user_id];
+
+  var sql =
+    "UPDATE matching_player SET status = 0 WHERE matching_id = ? AND user_id = ?";
+
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    res.send(result);
+  });
+});
 
 // 매칭 플레이어 조회
 router.get("/position/:matching_id", function (req, res) {
