@@ -3,6 +3,7 @@ const res = require("express/lib/response");
 const path = require("path");
 const { isBuffer } = require("util");
 const conn = require("../config/db_config");
+const mysql = require("mysql2");
 
 const router = express.Router();
 
@@ -105,4 +106,60 @@ router.get("/list", function (req, res) {
   });
 });
 
+// 자동 매칭
+router.get("/autoSearch", function (req, res) {
+  const main = [req.body.sports, req.body.state, req.body.city];
+
+  const extra = [req.body.position, req.body.level];
+  level = req.body.level;
+  // var sql1 =
+  //   "SELECT matching_info.matching_id, sports, state, city, gym_name, level, position FROM matching_info, gym_info, matching_player WHERE gym_info.sports = ? AND gym_info.state = ? AND gym_info.city = ? AND matching_info.status = 1 AND matching_player.status = 1 AND gym_info.gym_id=matching_info.gym_id AND matching_info.matching_id = matching_player.matching_id;";
+  // var sql1s = mysql.format(sql1, main);
+  var sql2 =
+    "SELECT matching_info.matching_id, sports, state, city, gym_name, level, description FROM matching_info, gym_info WHERE gym_info.sports = ? AND gym_info.state = ? AND gym_info.city = ? AND matching_info.status = 1 AND gym_info.gym_id=matching_info.gym_id;";
+  var sql2s = mysql.format(sql2, main);
+
+  conn.query(sql2s, [], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+    if (result == 0) {
+      // 종목, 지역에 해당하는 매칭이 없을 경우
+      res.send("There is no matching. Create matching!");
+    } else {
+      var auto = new Array();
+      console.log(result.length);
+      const matching_number = result.length;
+      for (var i = 0; i < matching_number; i++) {
+        console.log(result[i].level);
+        if (result[i].level == level) {
+          auto.push(i);
+        }
+      }
+      if (auto.length != 0) {
+        // level과 같은 매칭이 존재할 경우, 목록 중 랜덤으로 선택
+        res.send(result[auto[Math.floor(Math.random() * auto.length)]]);
+      } else if (auto.length == 0) {
+        // level 차이가 1인 매칭 검색
+        for (var j = 0; j < matching_number; j++) {
+          console.log(Math.abs(result[j].level - level));
+          if (Math.abs(result[j].level - level) == 1) {
+            auto.push(j);
+          }
+        }
+        res.send(result[auto[Math.floor(Math.random() * auto.length)]]);
+      } else {
+        // level 차이가 2인 매칭 검색
+        for (var j = 0; j < matching_number; j++) {
+          console.log(Math.abs(result[j].level - level));
+          if (Math.abs(result[j].level - level) == 2) {
+            auto.push(j);
+          }
+        }
+        res.send(result[auto[Math.floor(Math.random() * auto.length)]]);
+      }
+    }
+  });
+});
 module.exports = router;
