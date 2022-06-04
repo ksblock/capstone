@@ -55,7 +55,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
     origins: [
-      "http://35.89.91.71:8080",
+      "http://44.236.227.188:8080",
       "http://192.168.0.102:8080",
       "http://192.168.35.157:8080",
       "http://localhost:8080",
