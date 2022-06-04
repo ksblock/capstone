@@ -204,4 +204,20 @@ router.get("/address/:gym_id", function (req, res) {
   });
 });
 
+// 체육관 검색
+router.get("/search/:gym_name", function (req, res) {
+  const param = [req.params.gym_name];
+
+  var sql =
+    "SELECT gym_id, gym_name FROM gym_info WHERE gym_name LIKE CONCAT('%',?,'%')";
+  conn.query(sql, param, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("success");
+
+    res.send(result);
+  });
+});
+
 module.exports = router;
