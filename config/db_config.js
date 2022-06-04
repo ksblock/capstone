@@ -7,6 +7,7 @@ var conn = mysql.createConnection({
   password: db_config.password,
   database: db_config.database,
   multipleStatements: true,
+  timezone: "+09:00",
 });
 
 conn.connect();

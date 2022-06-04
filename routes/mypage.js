@@ -31,7 +31,6 @@ router.get("/posting/:user_id", function (req, res) {
       console.log(err);
     }
     console.log("success");
-
     res.send(result);
   });
 });
