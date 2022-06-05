@@ -96,7 +96,7 @@ router.get("/position/:matching_id", function (req, res) {
 // 매칭 목록 조회
 router.get("/list", function (req, res) {
   var sql =
-    "SELECT matching_id, matching_info.user_id, gym_info.gym_id, matching_info.reservation_id, matching_info.description, matching_info.status, level, gym_info.sports, reservation.start_time, reservation.end_time FROM matching_info, gym_info, reservation WHERE matching_info.gym_id = gym_info.gym_id AND matching_info.reservation_id = reservation.reservation_id";
+    "SELECT matching_id, matching_info.user_id, gym_info.gym_name, matching_info.reservation_id, matching_info.description, matching_info.status, level, gym_info.sports, reservation.start_time, reservation.end_time, user_info.nickname FROM matching_info, gym_info, user_info, reservation WHERE matching_info.gym_id = gym_info.gym_id AND matching_info.reservation_id = reservation.reservation_id AND reservation.user_id = user_info.user_id";
 
   conn.query(sql, [], (err, result) => {
     if (err) {
