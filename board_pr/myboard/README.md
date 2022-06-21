@@ -19,6 +19,7 @@ npm run build
 ```
 npm run lint
 I am practice yeah```
-practice practice
+* conflict making main
+>>>>>>> master
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
